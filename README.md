@@ -24,3 +24,4 @@ We will use an already setup Kubernetes cluster: https://killercoda.com/
 `k apply -f nginx-deployment.yaml`
 >
 `k get deploy --all-namespaces`
+..
