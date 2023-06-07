@@ -20,4 +20,7 @@ We will use an already setup Kubernetes cluster: https://killercoda.com/
 `kubectl run nginx --image=nginx`
 
 ### Deployment
-``
+> Creating an nginx deployment from the file
+`k apply -f nginx-deployment.yaml`
+>
+`k get deploy --all-namespaces`
