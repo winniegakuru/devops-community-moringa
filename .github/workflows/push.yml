@@ -37,6 +37,6 @@ jobs:
                 uses: docker/build-push-action@v2
                 with:
                     push: true
-                    tags: muthonig/test:${{ env.BRANCH }}-$(date +%s)
+                    tags: muthonig/devops-community-moringa:$(date +%s)
                     build-args: |
                         BRANCH=${{ env.BRANCH }}
