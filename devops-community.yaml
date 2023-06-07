@@ -1,0 +1,17 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: devops-community-deployment
+  namespace: devops-community
+spec:
+  selector:
+    matchLabels:
+      app: devops-community
+  template:
+    metadata:
+      labels:
+        app: devops-community
+    spec:
+      containers:
+        - name: devops-community
+          image: muthonig/devops-community-moringa:main-v1.0.0.2
