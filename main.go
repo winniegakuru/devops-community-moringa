@@ -2,7 +2,7 @@ package main
 
 import "fmt"
 
-var version = "dev213"
+var version = "dev"
 
 func main() {
 

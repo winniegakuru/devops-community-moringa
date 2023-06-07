@@ -21,10 +21,21 @@ jobs:
         DOCKER_PASSWORD: ${{secrets.DOCKER_ACCESS_TOKEN}}
       run: |
         docker login -u $DOCKER_USER -p $DOCKER_PASSWORD 
-    - name: Build the Docker image
+    - name: Build and push
+      id: gen_tags
       run: |
-        TAGS='["muthonig/image:"$(date +%s)]'
-        docker build . --file Dockerfile --tag ${{TAGS}}
-      
-    - name: Docker Push
-      run: docker push muthonig/node-test
+        if [[ $GITHUB_REF == 'refs/tags/'* ]]; then
+          TAGS='["user/image:latest","user/image:'${GITHUB_REF/refs\/tags\//}'"]'
+        else
+          TAGS='["user/image:latest"]'
+        fi
+        echo '::set-output name=tags::'$TAGS
+
+    - name: Build and push
+      id: docker_build
+      uses: docker/build-push-action@v2
+      # needs: gen_tags
+      with:
+        context: .
+        push: true
+        tags: ${{ fromJson(steps.gen_tags.outputs.tags) }}
