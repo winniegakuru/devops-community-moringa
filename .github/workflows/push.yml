@@ -1,5 +1,7 @@
 name: golang-pipeline
-on: push
+on:
+  push:
+    branches: [ main ]
 jobs:
   test:
     runs-on: ubuntu-latest
@@ -10,7 +12,7 @@ jobs:
         run: go test
   build:
     runs-on: ubuntu-latest
-
+    needs: test
     steps:
     - uses: actions/checkout@v2
     - name: docker login
@@ -20,24 +22,9 @@ jobs:
       run: |
         docker login -u $DOCKER_USER -p $DOCKER_PASSWORD 
     - name: Build the Docker image
-      run: docker build . --file Dockerfile --tag muthonig/node-test:$(date +%s)
+      run: |
+        TAGS='["muthonig/image:"$(date +%s)]'
+        docker build . --file Dockerfile --tag ${{TAGS}}
       
     - name: Docker Push
       run: docker push muthonig/node-test
-
-  # deploy:
-  #   runs-on: ubuntu-latest
-  #   needs: test
-  #   steps:
-  #   - uses: actions/checkout@v2
-  #   - name: docker login
-  #     env:
-  #       DOCKER_USER: ${{secrets.DOCKER_USER}}
-  #       DOCKER_PASSWORD: ${{secrets.DOCKER_PASSWORD}}
-  #     run: |
-  #       docker login -u $DOCKER_USER -p $DOCKER_PASSWORD 
-  #   - name: Build the Docker image
-  #     run: docker build . --file Dockerfile --tag chamodshehanka/node-test:$(date +%s)
-      
-  #   - name: Docker Push
-  #     run: docker push chamodshehanka/node-test
